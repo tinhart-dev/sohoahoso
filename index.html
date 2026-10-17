@@ -17,6 +17,7 @@
       height: 100%;
       overflow: hidden;
       background: #0f172a;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     iframe {
       width: 100%;
@@ -24,16 +25,55 @@
       border: none;
       display: block;
     }
+    /* Thanh thông báo nhỏ góc trên để hỗ trợ khi bị lỗi */
+    .incognito-tip {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: rgba(30, 41, 59, 0.9);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 9999;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: all 0.2s;
+    }
+    .incognito-tip:hover {
+      background: #1e293b;
+      border-color: #3b82f6;
+    }
   </style>
 </head>
 <body>
 
-  <!-- THẦY HÃY THAY LINK DƯỚI ĐÂY BẰNG LINK WEB APP CỦA THẦY -->
+  <!-- Nút hỗ trợ người dùng chuyển nhanh sang ẩn danh nếu bị kẹt nhiều tài khoản -->
+  <div class="incognito-tip" onclick="copyAndTip()">
+    <span>🕵️ Nếu bị lỗi đăng nhập: Bấm vào đây để mở Ẩn danh</span>
+  </div>
+
   <iframe 
+    id="app-frame"
     src="https://script.google.com/macros/s/AKfycbyfs4U-5DDd1bIh6cXHj3UENeu8IOUDH65npHTdDoxGQhrhdCQhIEW3d-1xK4m0vLZf/exec" 
-    allow="camera; microphone; autoplay; fullscreen" 
+    allow="camera; microphone; autoplay; fullscreen; clipboard-read; clipboard-write" 
     allowfullscreen>
   </iframe>
+
+  <script>
+    function copyAndTip() {
+      const url = "https://script.google.com/macros/s/AKfycbyfs4U-5DDd1bIh6cXHj3UENeu8IOUDH65npHTdDoxGQhrhdCQhIEW3d-1xK4m0vLZf/exec";
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url);
+      }
+      alert("ĐÃ SAO CHÉP ĐƯỜNG DẪN!\n\nCách mở tab ẩn danh:\n1. Bấm tổ hợp phím: Ctrl + Shift + N (hoặc Cmd + Shift + N trên Mac)\n2. Dán link (Ctrl + V) và nhấn Enter.");
+    }
+  </script>
 
 </body>
 </html>
