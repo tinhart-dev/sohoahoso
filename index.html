@@ -17,6 +17,7 @@
       height: 100%;
       overflow: hidden;
       background: #0f172a;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     iframe {
       width: 100%;
@@ -24,13 +25,72 @@
       border: none;
       display: block;
     }
+    /* ĐÃ CHUYỂN XUỐNG GÓC DƯỚI BÊN TRÁI - KHÔNG BAO GIỜ CHE NÚT ADMIN */
+    .incognito-tip {
+      position: fixed;
+      bottom: 15px;
+      left: 15px;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #f1f5f9;
+      padding: 7px 14px;
+      border-radius: 30px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 9999;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      transition: all 0.2s;
+    }
+    .incognito-tip:hover {
+      background: #1e293b;
+      border-color: #38bdf8;
+      transform: translateY(-1px);
+    }
+    .close-tip {
+      color: #94a3b8;
+      font-size: 13px;
+      margin-left: 4px;
+      padding: 0 4px;
+      font-weight: bold;
+    }
+    .close-tip:hover {
+      color: #ef4444;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Nút hỗ trợ đã chuyển xuống góc dưới bên trái, kèm nút tắt ✕ -->
+  <div id="tip-bar" class="incognito-tip" onclick="copyAndTip(event)">
+    <span>🕵️ Lỗi đăng nhập: Chạm để mở Ẩn danh</span>
+    <span class="close-tip" onclick="dismissTip(event)" title="Đóng thông báo">✕</span>
+  </div>
+
   <iframe 
+    id="app-frame"
     src="https://script.google.com/macros/s/AKfycbyfs4U-5DDd1bIh6cXHj3UENeu8IOUDH65npHTdDoxGQhrhdCQhIEW3d-1xK4m0vLZf/exec" 
-    allow="camera; microphone; autoplay; fullscreen" 
-    allowfullscreen>
+    allow="camera; microphone; autoplay; fullscreen; clipboard-read; clipboard-write">
   </iframe>
+
+  <script>
+    function copyAndTip(e) {
+      const url = "https://script.google.com/macros/s/AKfycbyfs4U-5DDd1bIh6cXHj3UENeu8IOUDH65npHTdDoxGQhrhdCQhIEW3d-1xK4m0vLZf/exec";
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url);
+      }
+      alert("ĐÃ SAO CHÉP ĐƯỜNG DẪN!\n\nCách mở tab ẩn danh:\n1. Bấm tổ hợp phím: Ctrl + Shift + N (hoặc Cmd + Shift + N trên Mac)\n2. Dán link (Ctrl + V) và nhấn Enter.");
+    }
+
+    // Hàm bấm dấu ✕ để tắt thông báo
+    function dismissTip(e) {
+      e.stopPropagation(); // Không kích hoạt alert khi bấm nút tắt
+      document.getElementById('tip-bar').style.display = 'none';
+    }
+  </script>
+
 </body>
 </html>
