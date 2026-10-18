@@ -17,7 +17,6 @@
       height: 100%;
       overflow: hidden;
       background: #0f172a;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     iframe {
       width: 100%;
@@ -25,98 +24,13 @@
       border: none;
       display: block;
     }
-
-    /* MẶC ĐỊNH ẨN HOÀN TOÀN (display: none) - CHỈ HIỆN KHI CÓ LỖI */
-    .incognito-tip {
-      display: none; 
-      position: fixed;
-      bottom: 15px;
-      left: 15px;
-      background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      color: #f8fafc;
-      padding: 8px 14px;
-      border-radius: 30px;
-      font-size: 11px;
-      align-items: center;
-      gap: 8px;
-      z-index: 9999;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
-      animation: fadeIn 0.3s ease-out;
-    }
-    .incognito-tip:hover {
-      background: #1e293b;
-      border-color: #ef4444;
-    }
-    .close-tip {
-      color: #94a3b8;
-      font-size: 13px;
-      margin-left: 4px;
-      padding: 0 4px;
-      font-weight: bold;
-    }
-    .close-tip:hover {
-      color: #ef4444;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
   </style>
 </head>
 <body>
-
-  <!-- Nút chỉ xuất hiện khi phát hiện có lỗi -->
-  <div id="tip-bar" class="incognito-tip" onclick="copyAndTip(event)">
-    <span>⚠️ Trợ giúp!!!</span>
-    <span class="close-tip" onclick="dismissTip(event)" title="Đóng thông báo">✕</span>
-  </div>
-
   <iframe 
-    id="app-frame"
     src="https://script.google.com/macros/s/AKfycbyfs4U-5DDd1bIh6cXHj3UENeu8IOUDH65npHTdDoxGQhrhdCQhIEW3d-1xK4m0vLZf/exec" 
-    allow="camera; microphone; autoplay; fullscreen; clipboard-read; clipboard-write">
+    allow="camera; microphone; autoplay; fullscreen" 
+    allowfullscreen>
   </iframe>
-
-  <script>
-    const tipBar = document.getElementById('tip-bar');
-
-    // 1. LẮNG NGHE TÍN HIỆU TỪ WEB APP BÊN TRONG
-    window.addEventListener('message', function(event) {
-      // Khi Web App báo tải thành công bình thường -> Hủy hẹn giờ, giữ nút luôn ẩn
-      if (event.data === 'APP_READY') {
-        clearTimeout(errorWatchdog);
-      }
-      // Khi Web App gặp lỗi đăng nhập / lỗi máy chủ -> Tự động hiện nút ngay lập tức
-      if (event.data === 'SHOW_INCOGNITO_ERROR') {
-        tipBar.style.display = 'flex';
-      }
-    });
-
-    // 2. HẸN GIỜ KIỂM TRA (7 giây):
-    // Nếu sau 7 giây mà Google bị kẹt (trắng trang do xung đột nhiều Gmail) -> Tự hiện nút
-    const errorWatchdog = setTimeout(function() {
-      tipBar.style.display = 'flex';
-    }, 7000);
-
-    function copyAndTip(e) {
-      const url = "https://script.google.com/macros/s/AKfycbyfs4U-5DDd1bIh6cXHj3UENeu8IOUDH65npHTdDoxGQhrhdCQhIEW3d-1xK4m0vLZf/exec";
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(url);
-      }
-      alert("HƯỚNG DẪN: \n Bước 1: Sao chép link phần mềm!\n Bước 2: Nhấn tổ hợp phím Ctrl + Shift + N\n Bước 3: Dán link (Ctrl + V) và nhấn Enter.\n\n -- Trên điện thoại: Mở Tab Ản danh/ dán liên kết vào.");
-    }
-
-    function dismissTip(e) {
-      e.stopPropagation();
-      tipBar.style.display = 'none';
-    }
-  </script>
-
 </body>
 </html>
-
-
- 
